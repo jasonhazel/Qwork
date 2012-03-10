@@ -1,4 +1,4 @@
-# Qwork: A Simple PHP Framework
+# Qwork (kwərk): A Simple PHP Framework
 
 There are already a lot of PHP frameworks out there.  The difference here is that I didn't write any of the other ones.
 

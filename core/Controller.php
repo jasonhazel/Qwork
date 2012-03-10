@@ -9,17 +9,15 @@ abstract class Controller
 
 	public function Render($view = null)
 	{
+		//this needs a lot of work.
 		if($view)
 		{
 			$action_view = strtolower($view);
 			if(substr(strtolower($action_view), -4) != '.tpl')
 				$action_view .= '.tpl';
-
-			
 		}
 		else
 			$action_view = $this->Name() . '/' . $this->route->action . '.tpl';
-
 
 		$action_view 		= DOCROOT . '/views/' . strtolower($action_view);
 		$application_view 	= DOCROOT . '/views/application.tpl';

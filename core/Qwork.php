@@ -31,3 +31,4 @@ class Qwork
 }
 
 $Q = new Qwork;
+$Q->Run()->Render();
