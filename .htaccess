@@ -1,0 +1,10 @@
+# having index.php in the URL is ugly, let's fix that.
+# If your server does not support mod_rewrite, then you'll
+# need to keep index.php (ex: domain.com/index.php/home)
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteBase /
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule . /index.php [L]
+</IfModule>
