@@ -37,10 +37,11 @@ class Request
 		$filtered->uri 		= ($filtered->uri == '' ? '/' : $filtered->uri);
 		$uri_breakdown = explode('/', $filtered->uri);
 		array_shift($uri_breakdown);
+		
 		$controller = ucfirst(strtolower(array_shift($uri_breakdown))) . 'Controller';
 		$filtered->controller = (class_exists($controller) ? $controller : 'DefaultController' );
 
-		$filtered->action = 'DefaultAction';
+		$filtered->action = 'Index';
 		
 		if(isset($uri_breakdown[0]))
 		{
