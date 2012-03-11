@@ -3,16 +3,16 @@ define('DOCROOT', dirname(__DIR__));
 
 ini_set('display_errors', 1);
 
+$global_config = array();
+$global_config["paths"] = array();
+
 function __autoload($class) {
-	$locations = array(
-		"core"			=> DOCROOT . "/core/$class.php",
-		"interfaces"	=> DOCROOT . "/core/interfaces/$class.php",
-		"controllers" 	=> DOCROOT . "/controllers/$class.php",
-		"models"		=> DOCROOT . "/models/$class.php",
-		"views"			=> DOCROOT . "/views/$class.php"
-	);
-	foreach($locations as $path)
-		if(file_exists($path)) include($path);
+	global $global_config;
+	foreach($global_config['paths'] as $path)
+	{
+		$class_path = $path . $class . '.php';
+		if(file_exists($class_path)) include($class_path);
+	}
 }
 
 class Qwork
@@ -21,6 +21,10 @@ class Qwork
 
 	public function __construct()
 	{
+		global $global_config;
+		$config_ini = parse_ini_file(DOCROOT . '/config.ini', true);
+		foreach($config_ini['paths'] as $key => $val)
+			$global_config['paths'][$key] = DOCROOT . "/$val/";
 		$this->Router 	= new Router;
 	}
 

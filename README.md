@@ -16,22 +16,10 @@ The main goal is to provide a framework that simplifies the creation of web base
 
 There is a lot of work that is still needed.  All feedback is welcome!
 
-* Rough draft of the logic behind rendering views is in place.  It isn't really flexible yet.
-
 ## Documentation
 
 Since GitHub offers a wiki, [I'm going to use it](https://github.com/mrhazel/Qwork/wiki) 
 
 ## Known Issues
 
-Considering that there isn't much going on yet, anything that hasn't been implemented can be considered a known 'issue.'  If you find a bug/issue, please let me know.  
-
-## TODO
-
-* Documentation
-	* Actually use the wiki provided by GitHub.
-	* Not focusing on until more functionality is in place.
-	* Need to add some docblocks and then generate PHPDoc documentation.
-	* Put together examples
-* Write tests
-* Refactor all the things.
+Considering that there isn't much going on yet, anything that hasn't been implemented can be considered a known 'issue.'  If you find a bug/issue, please let me know. 
