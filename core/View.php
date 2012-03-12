@@ -18,17 +18,25 @@ class View
 		return $this;
 	}
 
-	public function Path($path = null)
+	public function Render($path = null, $display = true)
 	{
+		$template_path = $this->path;
 		if($path)
-			$this->path = $path;
-		else
-			return $this->path;
-		return $this;
-	}
+			$template_path = $path;
 
-	public function Render()
-	{
+		$keys = array_keys($this->data);
+		$vars = array_map(function($v){return '{{@'.strtoupper($v).'}}';}, $keys);
+
+		if($template = file_get_contents($template_path))
+		{
+			$template = str_replace($vars, $this->data, $template);
+			if($display)
+				echo $template;
+			else
+				return $template;
+		}
+		else
+			return false;
 		
 	}
 

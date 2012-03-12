@@ -1,6 +1,12 @@
 <?php
 abstract class Controller
 {
+	protected $view;
+
+	public function __construct()
+	{
+		$this->view = new View;
+	}
 
 	public function Name()
 	{
@@ -9,7 +15,6 @@ abstract class Controller
 
 	public function Render($view = null)
 	{
-		//this needs a lot of work.
 		if($view)
 		{
 			$action_view = strtolower($view);
@@ -19,12 +24,8 @@ abstract class Controller
 		else
 			$action_view = $this->Name() . '/' . $this->route->action . '.tpl';
 
-		$action_view 		= DOCROOT . '/views/' . strtolower($action_view);
-		$application_view 	= DOCROOT . '/views/application.tpl';
-		
-		if(file_exists($action_view) && file_exists($application_view))
-			include($application_view);
-		else
-			throw new Exception("Invalid View");
+		$application_view = DOCROOT . '/views/application.tpl';
+		$this->view->Set('action', $this->view->Render(DOCROOT . '/views/' . strtolower($action_view), false));
+		$this->view->Render($application_view);
 	}
 }

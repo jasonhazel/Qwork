@@ -3,6 +3,6 @@
 		<title>Title</title>
 	</head>
 	<body>
-		<?php include($action_view); ?>
+		{{@ACTION}}
 	</body>
 </html>

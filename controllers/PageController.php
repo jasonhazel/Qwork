@@ -11,4 +11,10 @@ class PageController extends Controller
 	{
 		return $this;
 	}
+
+	public function Hello()
+	{
+		$this->view->Set('name',ucfirst($this->params[0]));
+		return $this;
+	}
 }

@@ -1,7 +1,7 @@
 <?php
 define('DOCROOT', dirname(__DIR__));
 
-ini_set('display_errors', 1);
+// ini_set('display_errors', 1);
 
 $global_config = array();
 $global_config["paths"] = array();
