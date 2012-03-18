@@ -25,7 +25,7 @@ class Router
 		
 		$route = $this->Request->route;
 		$controller = new $route->controller;
-		$controller->params = $route->params;
+		$controller->Parameters($route->params);
 		$controller->route = $route;
 		return $controller->{$route->action}();
 

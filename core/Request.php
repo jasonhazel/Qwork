@@ -1,14 +1,14 @@
 <?php
 
-class Request
+class Request extends DataStore
 {
-	private $data = array();
+	// private $data = array();
 
 	public function __construct()
 	{
-		$this->data['get'] 		= (object) $_GET;
-		$this->data['post'] 	= (object) $_POST;
-		$this->data['server'] 	= (object) $_SERVER;
+		$this->get 		= (object) $_GET;
+		$this->post 	= (object) $_POST;
+		$this->server 	= (object) $_SERVER;
 		$this->Filter();
 
 	}
@@ -35,24 +35,33 @@ class Request
 		$filtered->uri 		= preg_replace($regex_replace, '', $filtered->uri);
 
 		$filtered->uri 		= ($filtered->uri == '' ? '/' : $filtered->uri);
-		$uri_breakdown = explode('/', $filtered->uri);
-		array_shift($uri_breakdown);
 		
-		$controller = ucfirst(strtolower(array_shift($uri_breakdown))) . 'Controller';
-		$filtered->controller = (class_exists($controller) ? $controller : 'DefaultController' );
+		// break down the request to figure out the routing.
+		$uri_breakdown = array_filter(
+							explode('/', $filtered->uri), 
+							function($v)
+								{return !empty($v);}
+						);
+		$uri_breakdown = array_values($uri_breakdown);
 
-		$filtered->action = 'Index';
+		$controller_name = ucfirst(strtolower($uri_breakdown[0])) . 'Controller';
+		if(class_exists($controller_name) && $controller_name != 'Controller')
+			array_shift($uri_breakdown);
+		else
+			$controller_name = 'DefaultController';
+
+		$filtered->controller = $controller_name;
+
+
+		$action_name = ucfirst(strtolower($uri_breakdown[0]));
+		if(method_exists($filtered->controller, $action_name))
+			$array_shift($uri_breakdown);
+		else
+			$action_name = 'Index';
 		
-		if(isset($uri_breakdown[0]))
-		{
-			$action = ucfirst(strtolower($uri_breakdown[0]));
-			if(method_exists($filtered->controller, $action) && $filtered->controller != 'DefaultController')
-			{
-				$filtered->action = $action;
-				array_shift($uri_breakdown);
-			}
-		}
-		$filtered->params 	= $uri_breakdown;
-		$this->data['route'] = $filtered;
+		$filtered->action = $action_name;
+
+		$filtered->params 	= array_values($uri_breakdown);
+		$this->route = $filtered;
 	}
 }

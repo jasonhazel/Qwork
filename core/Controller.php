@@ -2,6 +2,8 @@
 abstract class Controller
 {
 	protected $view;
+	protected $params;
+	protected $param_keys;
 
 	public function __construct()
 	{
@@ -11,6 +13,20 @@ abstract class Controller
 	public function Name()
 	{
 		return str_replace('Controller','',get_called_class());
+	}
+
+	public function Parameters($params)
+	{
+		$this->params = new DataStore;
+		$index = count($params);
+		if(!empty($this->param_keys[$index]))
+		{
+			foreach($this->param_keys[$index] as $key => $val)
+			{
+				$val = strtolower($val);
+				$this->params->$val = $params[$key];
+			}
+		}
 	}
 
 	public function Render($view = null)

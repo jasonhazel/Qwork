@@ -1,31 +1,43 @@
 <?php
+
 define('DOCROOT', dirname(__DIR__));
+
+require(DOCROOT . '/core/DataStore.php');
 
 // ini_set('display_errors', 1);
 
-$global_config = array();
-$global_config["paths"] = array();
-
-function __autoload($class) {
-	global $global_config;
-	foreach($global_config['paths'] as $path)
-	{
-		$class_path = $path . $class . '.php';
-		if(file_exists($class_path)) include($class_path);
-	}
-}
+function __autoload($class) { Qwork::autoload($class); }
 
 class Qwork
 {
 	public $Router;
+	private static $data;
 
 	public function __construct()
 	{
-		global $global_config;
-		$config_ini = parse_ini_file(DOCROOT . '/config.ini', true);
-		foreach($config_ini['paths'] as $key => $val)
-			$global_config['paths'][$key] = DOCROOT . "/$val/";
+		self::$data = new DataStore;
+		$this->Config('config.ini');
 		$this->Router 	= new Router;
+		
+	}
+
+	public static function autoload($class)
+	{
+		foreach(self::$data->paths as $path)
+		{
+			$class_path = DOCROOT . "$path/$class.php";
+			if(file_exists($class_path)) include($class_path);
+		}
+	}
+
+	public function Config($filename = null)
+	{
+		if($ini = parse_ini_file(DOCROOT . '/' . $filename, true))
+			foreach($ini as $key => $val)
+				self::$data->$key =  $val;
+
+		return $this;
+
 	}
 
 	public function Run()
