@@ -37,15 +37,16 @@ class Request extends DataStore
 		$filtered->uri 		= ($filtered->uri == '' ? '/' : $filtered->uri);
 		
 		// break down the request to figure out the routing.
-		$uri_breakdown = array_filter(
+		// filter out null values.
+		$uri_breakdown = array_values(array_filter(
 							explode('/', $filtered->uri), 
-							function($v)
-								{return !empty($v);}
-						);
-		$uri_breakdown = array_values($uri_breakdown);
+							function($v) {return !empty($v);}
+						));
+		// $uri_breakdown = array_values($uri_breakdown);
 
-		$controller_name = ucfirst(strtolower($uri_breakdown[0])) . 'Controller';
-		if(class_exists($controller_name) && $controller_name != 'Controller')
+		$controller_name = ucfirst(strtolower($uri_breakdown[0]));
+
+		if(class_exists($controller_name . 'Controller') && !empty($controller_name))
 			array_shift($uri_breakdown);
 		else
 			$controller_name = 'DefaultController';
